@@ -2,7 +2,6 @@ package org.example.companyboiler.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 
 @Entity
@@ -13,8 +12,7 @@ import java.util.Date;
 public class Retain {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "batch")
