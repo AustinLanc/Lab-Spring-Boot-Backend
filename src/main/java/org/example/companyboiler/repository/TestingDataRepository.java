@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface TestingDataRepository extends JpaRepository<TestingData, String> {
+public interface TestingDataRepository extends JpaRepository<TestingData, Long> {
 
     List<TestingData> findByCode(String code);
 
@@ -23,5 +23,7 @@ public interface TestingDataRepository extends JpaRepository<TestingData, String
     List<TestingData> findAllOrderByDateDesc();
 
     List<TestingData> findByBatchContainingIgnoreCase(String batch);
+
+    List<TestingData> findByBatch(String batch);
 
 }

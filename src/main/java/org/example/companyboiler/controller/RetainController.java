@@ -60,6 +60,7 @@ public class RetainController {
 
     @PostMapping
     public Retain create(@RequestBody Retain retain) {
+        retain.setId(null);  // Ensure new entity is created
         return retainRepository.save(retain);
     }
 

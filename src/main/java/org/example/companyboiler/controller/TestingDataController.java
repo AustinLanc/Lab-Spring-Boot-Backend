@@ -24,11 +24,16 @@ public class TestingDataController {
         return testingDataRepository.findAllOrderByDateDesc();
     }
 
-    @GetMapping("/{batch}")
-    public ResponseEntity<TestingData> getByBatch(@PathVariable String batch) {
-        return testingDataRepository.findById(batch)
+    @GetMapping("/{id}")
+    public ResponseEntity<TestingData> getById(@PathVariable Long id) {
+        return testingDataRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/batch/{batch}")
+    public List<TestingData> getByBatch(@PathVariable String batch) {
+        return testingDataRepository.findByBatch(batch);
     }
 
     @GetMapping("/code/{code}")
@@ -59,21 +64,21 @@ public class TestingDataController {
         return testingDataRepository.save(testingData);
     }
 
-    @PutMapping("/{batch}")
-    public ResponseEntity<TestingData> update(@PathVariable String batch, @RequestBody TestingData testingData) {
-        if (!testingDataRepository.existsById(batch)) {
+    @PutMapping("/{id}")
+    public ResponseEntity<TestingData> update(@PathVariable Long id, @RequestBody TestingData testingData) {
+        if (!testingDataRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        testingData.setBatch(batch);
+        testingData.setId(id);
         return ResponseEntity.ok(testingDataRepository.save(testingData));
     }
 
-    @DeleteMapping("/{batch}")
-    public ResponseEntity<Void> delete(@PathVariable String batch) {
-        if (!testingDataRepository.existsById(batch)) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (!testingDataRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        testingDataRepository.deleteById(batch);
+        testingDataRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

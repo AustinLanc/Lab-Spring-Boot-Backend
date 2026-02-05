@@ -13,6 +13,10 @@ import java.time.LocalDate;
 public class TestingData {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
     @Column(name = "batch")
     private String batch;
 
