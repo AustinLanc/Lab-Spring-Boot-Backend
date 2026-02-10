@@ -57,7 +57,7 @@ The application follows a standard layered Spring Boot architecture:
                            │
 ┌──────────────────────────▼──────────────────────────────┐
 │                     MySQL Database                      │
-│  Tables: monthly_batches, qc, retains, testing_data,  │
+│  Tables: monthly_batches, qc, retains, testing_data,    │
 │          reminders, names                               │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -329,19 +329,19 @@ Client                  Backend                 LDAP Server
   │                       │<─────────────────────────│
   │                       │                          │
   │                       │  Generate JWT            │
-  │                       │  Set auth_token cookie  │
+  │                       │  Set auth_token cookie   │
   │  200 {token, user}    │                          │
   │<──────────────────────│                          │
   │                       │                          │
   │  GET /api/batches     │                          │
-  │  Cookie: auth_token=…│                          │
+  │  Cookie: auth_token=… │                          │
   │  (or) Authorization:  │                          │
   │       Bearer <token>  │                          │
   │──────────────────────>│                          │
   │                       │  JwtAuthFilter:          │
   │                       │  validate token,         │
   │                       │  set SecurityContext     │
-  │  200 [batch data]    │                          │
+  │  200 [batch data]     │                          │
   │<──────────────────────│                          │
 ```
 
