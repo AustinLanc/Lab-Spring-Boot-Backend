@@ -32,33 +32,33 @@ The application follows a standard layered Spring Boot architecture:
 └──────────────────────────┬──────────────────────────────┘
                            │ HTTPS / Telegram API
 ┌──────────────────────────▼──────────────────────────────┐
-│                    Security Layer                        │
+│                    Security Layer                       │
 │  ┌──────────────┐  ┌──────────────┐  ┌───────────────┐  │
 │  │  CORS Filter │→ │ JWT Filter   │→ │ Authorization │  │
 │  └──────────────┘  └──────────────┘  └───────────────┘  │
 └──────────────────────────┬──────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────┐
-│                   Controller Layer                       │
-│  AuthController · MonthlyBatchController · QcController  │
-│  RetainController · ReminderController · TestingData...  │
-│  ProductNameController · RouteController (SPA forward)   │
+│                   Controller Layer                      │
+│  AuthController · MonthlyBatchController · QcController │
+│  RetainController · ReminderController · TestingData... │
+│  ProductNameController · RouteController (SPA forward)  │
 └──────────────────────────┬──────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────┐
-│                    Service Layer                         │
+│                    Service Layer                        │
 │  JwtService · LdapAuthService · TelegramBotService      │
 └──────────────────────────┬──────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────┐
-│                  Repository Layer (JPA)                  │
+│                  Repository Layer (JPA)                 │
 │  6 repositories with custom JPQL + native SQL queries   │
 └──────────────────────────┬──────────────────────────────┘
                            │
 ┌──────────────────────────▼──────────────────────────────┐
-│                     MySQL Database                       │
-│  Tables: monthly\_batches, qc, retains, testing\_data,    │
-│          reminders, names                                │
+│                     MySQL Database                      │
+│  Tables: monthly\_batches, qc, retains, testing\_data,  │
+│          reminders, names                               │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -319,30 +319,30 @@ All configuration lives in `application.properties` and is driven by environment
 
 ```
 Client                  Backend                 LDAP Server
-  │                       │                        │
-  │  POST /api/auth/login │                        │
-  │  {username, password} │                        │
-  │──────────────────────>│                        │
-  │                       │  LDAP bind (user@domain)│
-  │                       │───────────────────────>│
-  │                       │  bind result + user info│
-  │                       │<───────────────────────│
-  │                       │                        │
-  │                       │  Generate JWT           │
+  │                       │                          │
+  │  POST /api/auth/login │                          │
+  │  {username, password} │                          │
+  │──────────────────────>│                          │
+  │                       │  LDAP bind (user@domain) │
+  │                       │─────────────────────────>│
+  │                       │  bind result + user info │
+  │                       │<─────────────────────────│
+  │                       │                          │
+  │                       │  Generate JWT            │
   │                       │  Set auth\_token cookie  │
-  │  200 {token, user}    │                        │
-  │<──────────────────────│                        │
-  │                       │                        │
-  │  GET /api/batches     │                        │
-  │  Cookie: auth\_token=… │                        │
-  │  (or) Authorization:  │                        │
-  │       Bearer <token>  │                        │
-  │──────────────────────>│                        │
-  │                       │  JwtAuthFilter:         │
-  │                       │  validate token,        │
+  │  200 {token, user}    │                          │
+  │<──────────────────────│                          │
+  │                       │                          │
+  │  GET /api/batches     │                          │
+  │  Cookie: auth\_token=…│                          │
+  │  (or) Authorization:  │                          │
+  │       Bearer <token>  │                          │
+  │──────────────────────>│                          │
+  │                       │  JwtAuthFilter:          │
+  │                       │  validate token,         │
   │                       │  set SecurityContext     │
-  │  200 \[batch data]     │                        │
-  │<──────────────────────│                        │
+  │  200 \[batch data]    │                          │
+  │<──────────────────────│                          │
 ```
 
 ### JWT Details
