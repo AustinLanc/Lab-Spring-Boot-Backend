@@ -12,7 +12,7 @@ A Spring Boot 4.0.2 REST API for managing grease/lubricant manufacturing operati
 4. [Getting Started](#getting-started)
 5. [Docker Deployment](#docker-deployment)
 6. [Configuration Reference](#configuration-reference)
-7. [Authentication \& Security](#authentication--security)
+7. [Authentication & Security](#authentication--security)
 8. [Database Schema](#database-schema)
 9. [Batch Naming Convention](#batch-naming-convention)
 10. [API Reference](#api-reference)
@@ -57,12 +57,12 @@ The application follows a standard layered Spring Boot architecture:
                            │
 ┌──────────────────────────▼──────────────────────────────┐
 │                     MySQL Database                      │
-│  Tables: monthly\_batches, qc, retains, testing\_data,  │
+│  Tables: monthly_batches, qc, retains, testing_data,  │
 │          reminders, names                               │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Request lifecycle:** Every incoming HTTP request passes through the CORS filter, then the JWT authentication filter (which extracts and validates the token from the `Authorization` header or `auth\_token` cookie), then Spring Security's authorization rules. Public endpoints under `/api/auth/\*\*` bypass authentication. All other `/api/\*\*` endpoints require a valid JWT.
+**Request lifecycle:** Every incoming HTTP request passes through the CORS filter, then the JWT authentication filter (which extracts and validates the token from the `Authorization` header or `auth_token` cookie), then Spring Security's authorization rules. Public endpoints under `/api/auth/**` bypass authentication. All other `/api/**` endpoints require a valid JWT.
 
 ---
 
@@ -151,7 +151,7 @@ src/main/resources/
 * An **LDAP/Active Directory** server for authentication (or modify auth for local dev)
 * (Optional) A **Telegram bot** token if you want reminder notifications
 
-### 1\. Clone and configure
+### 1. Clone and configure
 
 ```bash
 git clone <repository-url>
@@ -187,15 +187,15 @@ TELEGRAM_BOT_USERNAME=
 TELEGRAM_CHAT_ID=
 ```
 
-### 2\. Create the database
+### 2. Create the database
 
 ```sql
-CREATE DATABASE grease\_data CHARACTER SET utf8mb4 COLLATE utf8mb4\_unicode\_ci;
+CREATE DATABASE grease_data CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Hibernate's `ddl-auto=update` will create all tables automatically on first startup.
 
-### 3\. Build and run
+### 3. Build and run
 
 ```bash
 # Using the Maven wrapper
@@ -208,7 +208,7 @@ java -jar target/LabBackend-0.0.1-SNAPSHOT.jar
 
 The server starts on port **8080** by default.
 
-### 4\. Verify
+### 4. Verify
 
 ```bash
 curl http://localhost:8080/api/auth/check
@@ -313,7 +313,7 @@ All configuration lives in `application.properties` and is driven by environment
 
 ---
 
-## Authentication \& Security
+## Authentication & Security
 
 ### Authentication Flow
 
@@ -329,19 +329,19 @@ Client                  Backend                 LDAP Server
   │                       │<─────────────────────────│
   │                       │                          │
   │                       │  Generate JWT            │
-  │                       │  Set auth\_token cookie  │
+  │                       │  Set auth_token cookie  │
   │  200 {token, user}    │                          │
   │<──────────────────────│                          │
   │                       │                          │
   │  GET /api/batches     │                          │
-  │  Cookie: auth\_token=…│                          │
+  │  Cookie: auth_token=…│                          │
   │  (or) Authorization:  │                          │
   │       Bearer <token>  │                          │
   │──────────────────────>│                          │
   │                       │  JwtAuthFilter:          │
   │                       │  validate token,         │
   │                       │  set SecurityContext     │
-  │  200 \[batch data]    │                          │
+  │  200 [batch data]    │                          │
   │<──────────────────────│                          │
 ```
 
@@ -350,14 +350,14 @@ Client                  Backend                 LDAP Server
 * **Algorithm:** HMAC-SHA (key derived from `jwt.secret`)
 * **Payload:** subject = username, issued-at, expiration
 * **Lifetime:** configurable via `jwt.expiration` (default 24 hours)
-* **Delivery:** returned in the login response body AND set as an `auth\_token` HTTP-only cookie
+* **Delivery:** returned in the login response body AND set as an `auth_token` HTTP-only cookie
 
 ### JWT Extraction Priority
 
 The `JwtAuthFilter` checks for a token in this order:
 
 1. `Authorization: Bearer <token>` header
-2. `auth\_token` cookie
+2. `auth_token` cookie
 
 If neither is present or the token is invalid, the request proceeds unauthenticated (Spring Security will deny it if the endpoint requires auth).
 
@@ -375,8 +375,8 @@ On successful bind, the service retrieves `displayName`, `mail`, `cn`, `sAMAccou
 
 |Pattern|Access|
 |-|-|
-|`/api/auth/\*\*`|Public (no auth required)|
-|`/api/\*\*`|Authenticated (valid JWT required)|
+|`/api/auth/**`|Public (no auth required)|
+|`/api/**`|Authenticated (valid JWT required)|
 |Everything else|Public (SPA static files, etc.)|
 
 ### CORS
@@ -391,14 +391,14 @@ Credentials: enabled (required for cookie-based auth)
 
 Hibernate auto-creates and updates tables from JPA entity annotations (`ddl-auto=update`). Below is the logical schema.
 
-### `monthly\_batches` — Production Batches
+### `monthly_batches` — Production Batches
 
 |Column|Type|Key|Description|
 |-|-|-|-|
 |`batch`|VARCHAR|PK|Batch identifier (e.g., `NA6102`)|
 |`code`|INT||Product code|
-|`date\_start`|DATETIME||Production start|
-|`date\_end`|DATETIME||Production end|
+|`date_start`|DATETIME||Production start|
+|`date_end`|DATETIME||Production end|
 |`lbs`|INT||Weight in pounds|
 |`released`|VARCHAR||`"Yes"` or `"No"`|
 |`type`|VARCHAR||Batch type|
@@ -410,10 +410,10 @@ Hibernate auto-creates and updates tables from JPA entity annotations (`ddl-auto
 |`batch`|VARCHAR|PK|Batch identifier|
 |`code`|VARCHAR||Product code|
 |`suffix`|VARCHAR||Batch suffix|
-|`pen\_60x`|VARCHAR||Penetration at 60 strokes|
-|`drop\_point`|VARCHAR||Drop point measurement|
+|`pen_60x`|VARCHAR||Penetration at 60 strokes|
+|`drop_point`|VARCHAR||Drop point measurement|
 |`date`|VARCHAR||Test date|
-|`released\_by`|VARCHAR||Name of person who released|
+|`released_by`|VARCHAR||Name of person who released|
 
 ### `retains` — Retain Samples
 
@@ -425,7 +425,7 @@ Hibernate auto-creates and updates tables from JPA entity annotations (`ddl-auto
 |`date`|DATE||Date retained|
 |`box`|BIGINT||Physical box number|
 
-### `testing\_data` — Laboratory Testing Data
+### `testing_data` — Laboratory Testing Data
 
 |Column|Type|Key|Description|
 |-|-|-|-|
@@ -433,42 +433,42 @@ Hibernate auto-creates and updates tables from JPA entity annotations (`ddl-auto
 |`batch`|VARCHAR||Batch identifier|
 |`code`|VARCHAR||Product code|
 |`date`|DATE||Test date|
-|`pen\_0x`|VARCHAR||Unworked penetration|
-|`pen\_60x`|VARCHAR||Worked penetration (60 strokes)|
-|`pen\_10k`|VARCHAR||Worked penetration (10,000 strokes)|
-|`pen\_100k`|VARCHAR||Worked penetration (100,000 strokes)|
-|`drop\_point`|VARCHAR||Drop point (°F or °C)|
+|`pen_0x`|VARCHAR||Unworked penetration|
+|`pen_60x`|VARCHAR||Worked penetration (60 strokes)|
+|`pen_10k`|VARCHAR||Worked penetration (10,000 strokes)|
+|`pen_100k`|VARCHAR||Worked penetration (100,000 strokes)|
+|`drop_point`|VARCHAR||Drop point (°F or °C)|
 |`weld`|VARCHAR||Weld point test|
 |`rust`|VARCHAR||Rust prevention test|
-|`copper\_corrosion`|VARCHAR||Copper strip corrosion test|
+|`copper_corrosion`|VARCHAR||Copper strip corrosion test|
 |`oxidation`|VARCHAR||Oxidation stability test|
-|`oil\_bleed`|VARCHAR||Oil separation/bleed|
-|`spray\_off`|VARCHAR||Spray-off resistance|
+|`oil_bleed`|VARCHAR||Oil separation/bleed|
+|`spray_off`|VARCHAR||Spray-off resistance|
 |`washout`|VARCHAR||Water washout test|
-|`pressure\_bleed`|VARCHAR||Pressure bleed test|
-|`roll\_stability\_dry`|VARCHAR||Roll stability (dry)|
-|`roll\_stability\_wet`|VARCHAR||Roll stability (wet)|
+|`pressure_bleed`|VARCHAR||Pressure bleed test|
+|`roll_stability_dry`|VARCHAR||Roll stability (dry)|
+|`roll_stability_wet`|VARCHAR||Roll stability (wet)|
 |`wear`|VARCHAR||Wear test results|
-|`ft\_ir`|VARCHAR||Fourier-transform infrared spectroscopy|
+|`ft_ir`|VARCHAR||Fourier-transform infrared spectroscopy|
 |`rheometer`|VARCHAR||Rheometer reading|
-|`rheometer\_temp`|VARCHAR||Rheometer temperature|
-|`minitest\_minus40`|VARCHAR||Mini-test at -40°C|
-|`minitest\_minus30`|VARCHAR||Mini-test at -30°C|
-|`minitest\_minus20`|VARCHAR||Mini-test at -20°C|
-|`minitest\_0`|VARCHAR||Mini-test at 0°C|
-|`minitest\_20`|VARCHAR||Mini-test at 20°C|
+|`rheometer_temp`|VARCHAR||Rheometer temperature|
+|`minitest_minus40`|VARCHAR||Mini-test at -40°C|
+|`minitest_minus30`|VARCHAR||Mini-test at -30°C|
+|`minitest_minus20`|VARCHAR||Mini-test at -20°C|
+|`minitest_0`|VARCHAR||Mini-test at 0°C|
+|`minitest_20`|VARCHAR||Mini-test at 20°C|
 
 ### `reminders` — Batch Reminders
 
 |Column|Type|Key|Description|
 |-|-|-|-|
 |`id`|BIGINT|PK, auto|Auto-generated ID|
-|`reminder\_id`|VARCHAR(50)|UNIQUE|Composite key: `{batch}-{interval}`|
+|`reminder_id`|VARCHAR(50)|UNIQUE|Composite key: `{batch}-{interval}`|
 |`batch`|VARCHAR(20)|IDX|Batch identifier|
-|`interval\_type`|VARCHAR(10)||`48h`, `7d`, `3m`, or `1y`|
+|`interval_type`|VARCHAR(10)||`48h`, `7d`, `3m`, or `1y`|
 |`due`|DATETIME|IDX|When the reminder fires|
 |`notified`|BOOLEAN|IDX|Whether notification was sent|
-|`created\_at`|DATETIME||Creation timestamp|
+|`created_at`|DATETIME||Creation timestamp|
 
 ### `names` — Product Code Directory
 
@@ -483,7 +483,7 @@ Hibernate auto-creates and updates tables from JPA entity annotations (`ddl-auto
 
 Batch identifiers encode the production month and year within the name itself. This convention is critical to how the statistics engine works.
 
-**Format:** `\[PREFIX]\[MONTH\_LETTER]\[YEAR\_DIGIT]\[SEQUENCE]\[SUFFIX?]`
+**Format:** `[PREFIX][MONTH_LETTER][YEAR_DIGIT][SEQUENCE][SUFFIX?]`
 
 ```
   N  A  6  1  0  2
@@ -547,7 +547,7 @@ Authenticates against LDAP and returns a JWT.
 }
 ```
 
-Also sets an `auth\_token` HTTP-only cookie.
+Also sets an `auth_token` HTTP-only cookie.
 
 **Failure Response (401):**
 
@@ -560,7 +560,7 @@ Also sets an `auth\_token` HTTP-only cookie.
 
 #### `POST /api/auth/logout`
 
-Clears the `auth\_token` cookie.
+Clears the `auth_token` cookie.
 
 **Response (200):**
 
@@ -608,7 +608,7 @@ Lightweight authentication check.
 |`GET`|`/api/batches/code/{code}`|Batches by product code|
 |`GET`|`/api/batches/type/{type}`|Batches by type|
 |`GET`|`/api/batches/released/{released}`|Batches by release status (`Yes`/`No`)|
-|`GET`|`/api/batches/daterange?start=...\&end=...`|Batches in date range (ISO 8601 datetime)|
+|`GET`|`/api/batches/daterange?start=...&end=...`|Batches in date range (ISO 8601 datetime)|
 |`POST`|`/api/batches`|Create batch|
 |`PUT`|`/api/batches/{batch}`|Update batch|
 |`DELETE`|`/api/batches/{batch}`|Delete batch|
@@ -685,7 +685,7 @@ Lightweight authentication check.
 |`GET`|`/api/retains/code/{code}`|Retains by product code|
 |`GET`|`/api/retains/box/{box}`|Retains by box number|
 |`GET`|`/api/retains/search?batch=...`|Case-insensitive batch search|
-|`GET`|`/api/retains/daterange?start=...\&end=...`|Retains in date range|
+|`GET`|`/api/retains/daterange?start=...&end=...`|Retains in date range|
 |`POST`|`/api/retains`|Create retain (ID auto-generated)|
 |`PUT`|`/api/retains/{id}`|Update retain|
 |`DELETE`|`/api/retains/{id}`|Delete retain|
@@ -714,7 +714,7 @@ Lightweight authentication check.
 |`GET`|`/api/testing/code/{code}`|Records by product code|
 |`GET`|`/api/testing/search?batch=...`|Case-insensitive batch search|
 |`GET`|`/api/testing/date/{date}`|Records by date (ISO date)|
-|`GET`|`/api/testing/daterange?start=...\&end=...`|Records in date range|
+|`GET`|`/api/testing/daterange?start=...&end=...`|Records in date range|
 |`POST`|`/api/testing`|Create record|
 |`PUT`|`/api/testing/{id}`|Update record|
 |`DELETE`|`/api/testing/{id}`|Delete record|
@@ -981,7 +981,7 @@ The statistics are computed via a native SQL query in `MonthlyBatchRepository`:
 ### Response Format
 
 ```json
-\[
+[
   {
     "year": 2026,
     "month": 1,
