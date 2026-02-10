@@ -163,28 +163,28 @@ Edit `.env` with your actual values:
 
 ```dotenv
 # Database
-DB\_HOST=localhost
-DB\_PORT=3306
-DB\_NAME=grease\_data
-DB\_USERNAME=root
-DB\_PASSWORD=your\_password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=grease_data
+DB_USERNAME=root
+DB_PASSWORD=your_password
 
 # LDAP
-LDAP\_URL=ldap://your-ad-server:389
-LDAP\_BASE\_DN=dc=company,dc=com
-LDAP\_DOMAIN=company.com
-LDAP\_USER\_SEARCH\_BASE=ou=users
-LDAP\_USER\_SEARCH\_FILTER=(sAMAccountName={0})
+LDAP_URL=ldap://your-ad-server:389
+LDAP_BASE_DN=dc=company,dc=com
+LDAP_DOMAIN=company.com
+LDAP_USER_SEARCH_BASE=ou=users
+LDAP_USER_SEARCH_FILTER=(sAMAccountName={0})
 
 # JWT (generate a strong random secret)
-JWT\_SECRET=your-256-bit-secret-key-here-make-it-long-and-random
-JWT\_EXPIRATION=86400000
+JWT_SECRET=your-256-bit-secret-key-here-make-it-long-and-random
+JWT_EXPIRATION=86400000
 
 # Telegram (optional)
-TELEGRAM\_BOT\_ENABLED=false
-TELEGRAM\_BOT\_TOKEN=
-TELEGRAM\_BOT\_USERNAME=
-TELEGRAM\_CHAT\_ID=
+TELEGRAM_BOT_ENABLED=false
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_BOT_USERNAME=
+TELEGRAM_CHAT_ID=
 ```
 
 ### 2\. Create the database
@@ -291,23 +291,23 @@ All configuration lives in `application.properties` and is driven by environment
 
 |Property|Env Variable|Default|Description|
 |-|-|-|-|
-|`spring.datasource.url`|`DB\_HOST`, `DB\_PORT`, `DB\_NAME`|`localhost:3306/grease\_data`|JDBC connection URL|
-|`spring.datasource.username`|`DB\_USERNAME`|`root`|Database username|
-|`spring.datasource.password`|`DB\_PASSWORD`|*(empty)*|Database password|
+|`spring.datasource.url`|`DB_HOST`, `DB_PORT`, `DB_NAME`|`localhost:3306/grease_data`|JDBC connection URL|
+|`spring.datasource.username`|`DB_USERNAME`|`root`|Database username|
+|`spring.datasource.password`|`DB_PASSWORD`|*(empty)*|Database password|
 |`spring.jpa.hibernate.ddl-auto`|—|`update`|Hibernate schema strategy|
-|`jwt.secret`|`JWT\_SECRET`|placeholder string|HMAC-SHA signing key|
-|`jwt.expiration`|`JWT\_EXPIRATION`|`86400000` (24h in ms)|Token lifetime|
-|`ldap.url`|`LDAP\_URL`|`ldap://localhost:389`|LDAP server URL|
-|`ldap.base.dn`|`LDAP\_BASE\_DN`|`dc=company,dc=com`|LDAP base distinguished name|
-|`ldap.domain`|`LDAP\_DOMAIN`|*(empty)*|Domain appended to usernames|
-|`ldap.user.search.base`|`LDAP\_USER\_SEARCH\_BASE`|`ou=users`|LDAP search base for users|
-|`ldap.user.search.filter`|`LDAP\_USER\_SEARCH\_FILTER`|`(sAMAccountName={0})`|LDAP user search filter|
-|`telegram.bot.enabled`|`TELEGRAM\_BOT\_ENABLED`|`false`|Enable/disable Telegram bot|
-|`telegram.bot.token`|`TELEGRAM\_BOT\_TOKEN`|*(empty)*|Bot API token|
-|`telegram.bot.username`|`TELEGRAM\_BOT\_USERNAME`|*(empty)*|Bot username|
-|`telegram.chat.id`|`TELEGRAM\_CHAT\_ID`|*(empty)*|Target chat for notifications|
+|`jwt.secret`|`JWT_SECRET`|placeholder string|HMAC-SHA signing key|
+|`jwt.expiration`|`JWT_EXPIRATION`|`86400000` (24h in ms)|Token lifetime|
+|`ldap.url`|`LDAP_URL`|`ldap://localhost:389`|LDAP server URL|
+|`ldap.base.dn`|`LDAP_BASE_DN`|`dc=company,dc=com`|LDAP base distinguished name|
+|`ldap.domain`|`LDAP_DOMAIN`|*(empty)*|Domain appended to usernames|
+|`ldap.user.search.base`|`LDAP_USER_SEARCH_BASE`|`ou=users`|LDAP search base for users|
+|`ldap.user.search.filter`|`LDAP_USER_SEARCH_FILTER`|`(sAMAccountName={0})`|LDAP user search filter|
+|`telegram.bot.enabled`|`TELEGRAM_BOT_ENABLED`|`false`|Enable/disable Telegram bot|
+|`telegram.bot.token`|`TELEGRAM_BOT_TOKEN`|*(empty)*|Bot API token|
+|`telegram.bot.username`|`TELEGRAM_BOT_USERNAME`|*(empty)*|Bot username|
+|`telegram.chat.id`|`TELEGRAM_CHAT_ID`|*(empty)*|Target chat for notifications|
 |`spring.application.name`|—|`LabBackend`|Application name|
-|`server.servlet.session.timeout`|`SESSION\_TIMEOUT`|`86400` (24h in seconds)|Server session timeout|
+|`server.servlet.session.timeout`|`SESSION_TIMEOUT`|`86400` (24h in seconds)|Server session timeout|
 |`management.endpoints.web.exposure.include`|—|`health`|Exposed actuator endpoints|
 |`management.endpoint.health.show-details`|—|`never`|Health endpoint detail level|
 
